@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
+import React, { useEffect, useState } from "react";
+import * as d3 from "d3";
+import Child1 from "./Child1";
+import Child2 from "./Child2";
+import tips from "./tips.csv";
 
-function App() {
+const App = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // Load the CSV data
+    d3.csv(tips).then((data) => {
+      // Convert relevant fields to numbers
+      data.forEach((d) => {
+        d.total_bill = +d.total_bill;
+        d.tip = +d.tip;
+      });
+      setData(data);
+    });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ textAlign: "center", margin: "20px" }}>
+      <h1>Tips Data Visualization</h1>
+
+      {/* Chart 1: Scatter Plot (Total Bill vs Tips) */}
+      <div style={{ marginBottom: "40px" }}>
+        <Child1 data={data} />
+      </div>
+
+      {/* Chart 2: Bar Chart (Average Tip by Day) */}
+      <div>
+        <Child2 data={data} />
+      </div>
     </div>
   );
-}
+};
 
 export default App;
