@@ -18,6 +18,8 @@ const Child2 = ({ data }) => {
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
+    svg.selectAll("*").remove();
+
     const filteredData = data.filter(d => d.tip !== undefined && d.day !== undefined);
 
     const averageTips = d3.rollups(
@@ -42,7 +44,6 @@ const Child2 = ({ data }) => {
     svg.append("g")
       .call(d3.axisLeft(y));
 
-    // Add bars with the correct fill color
     svg.selectAll(".bar")
       .data(averageTips)
       .enter().append("rect")
@@ -51,7 +52,7 @@ const Child2 = ({ data }) => {
       .attr("y", d => y(d[1]))
       .attr("width", x.bandwidth())
       .attr("height", d => height - y(d[1]))
-      .attr("fill", "#69b3a2"); // Set fill color explicitly
+      .attr("fill", "#69b3a2");
 
     svg.append("text")
       .attr("x", width / 2)
